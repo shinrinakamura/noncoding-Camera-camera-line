@@ -1,1 +1,6 @@
-# noncoding-Camera-camera-line
+# ノンコーディングでIoTするLT会で使用したものです  
+ラズベリーパイ、ラズベリーパイカメラ、Webカメラがあれば実装できます。
+環境設定　　
+openCV,node-red,MJPG-streamer,mpg321のインストールが必要　　
+参考URI
+こちらのブログを参考にすることで実装できると思います。
