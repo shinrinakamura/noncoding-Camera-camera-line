@@ -1,0 +1,234 @@
+[
+    {
+        "id": "d4a14629.b1aa68",
+        "type": "http in",
+        "z": "9e5cf9d.6bffd08",
+        "name": "",
+        "url": "/line",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 86.66666412353516,
+        "y": 280,
+        "wires": [
+            [
+                "fd889041.9b663",
+                "e3cbf289.ccd2a"
+            ]
+        ]
+    },
+    {
+        "id": "fd889041.9b663",
+        "type": "http response",
+        "z": "9e5cf9d.6bffd08",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 250,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "629af298.03c5ac",
+        "type": "function",
+        "z": "9e5cf9d.6bffd08",
+        "name": "不審者発見",
+        "func": "var post_request = {\n    \"headers\": {\n        \"content-type\": \"application/json; charset=UTF-8\",\n        \"Authorization\": \" Bearer \" + \"Channel Access Token\"\n    },\n    \"payload\": {\n        \"to\": \"UserId\",\n        \"messages\": [\n            {\n                \"type\": \"text\",\n                \"text\": \"カメラの前に誰かいます確認して、怪しければ「はい」怪しくなければ「いいえ」を返信してくださいhttp://192.168.100.110:8080/stream.html\"\n            }\n        ]\n    }\n};\n\nreturn post_request;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 296.66666412353516,
+        "y": 160,
+        "wires": [
+            [
+                "67f4a5f2.651cbc"
+            ]
+        ]
+    },
+    {
+        "id": "67f4a5f2.651cbc",
+        "type": "http request",
+        "z": "9e5cf9d.6bffd08",
+        "name": "Push Message",
+        "method": "POST",
+        "ret": "txt",
+        "url": "https://api.line.me/v2/bot/message/push",
+        "tls": "",
+        "x": 486.66666412353516,
+        "y": 160,
+        "wires": [
+            [
+                "c0e74b8b.515538"
+            ]
+        ]
+    },
+    {
+        "id": "c0e74b8b.515538",
+        "type": "debug",
+        "z": "9e5cf9d.6bffd08",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 696.6666641235352,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "e3cbf289.ccd2a",
+        "type": "switch",
+        "z": "9e5cf9d.6bffd08",
+        "name": "",
+        "property": "payload.events[0].message.text",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "はい",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "いいえ",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 256.66666412353516,
+        "y": 280,
+        "wires": [
+            [
+                "59c7acf6.7c4104"
+            ],
+            [
+                "c82e26e4.7c1ce8"
+            ]
+        ]
+    },
+    {
+        "id": "59c7acf6.7c4104",
+        "type": "function",
+        "z": "9e5cf9d.6bffd08",
+        "name": "不審者だったとき",
+        "func": "var post_request = {\n    \"headers\": {\n        \"content-type\": \"application/json; charset=UTF-8\",\n        \"Authorization\": \" Bearer \" + \"Channel Access Token\"\n    },\n    \"payload\": {\n        \"to\": \"UserID\",\n        \"messages\": [\n            {\n                \"type\": \"text\",\n                \"text\": \"怪しい人を撃退します\"\n            }\n        ]\n    }\n};\n\nreturn post_request;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 456.66666412353516,
+        "y": 260,
+        "wires": [
+            [
+                "93c59204.c4dc1",
+                "f2aadac6.b441e8"
+            ]
+        ]
+    },
+    {
+        "id": "c82e26e4.7c1ce8",
+        "type": "function",
+        "z": "9e5cf9d.6bffd08",
+        "name": "不審者ではなかったとき",
+        "func": "var post_request = {\n    \"headers\": {\n        \"content-type\": \"application/json; charset=UTF-8\",\n        \"Authorization\": \" Bearer \" + \"Channel Access Token\"\n    },\n    \"payload\": {\n        \"to\": \"UserID\",\n        \"messages\": [\n            {\n                \"type\": \"text\",\n                \"text\": \"怪しい人ではなさそうなのでそのままにします\"\n            }\n        ]\n    }\n};\n\nreturn post_request;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 476.66666412353516,
+        "y": 320,
+        "wires": [
+            [
+                "93c59204.c4dc1"
+            ]
+        ]
+    },
+    {
+        "id": "93c59204.c4dc1",
+        "type": "http request",
+        "z": "9e5cf9d.6bffd08",
+        "name": "Push Message",
+        "method": "POST",
+        "ret": "txt",
+        "url": "https://api.line.me/v2/bot/message/push",
+        "tls": "",
+        "x": 746.6666641235352,
+        "y": 340,
+        "wires": [
+            [
+                "6aa51263.32718c"
+            ]
+        ]
+    },
+    {
+        "id": "6aa51263.32718c",
+        "type": "debug",
+        "z": "9e5cf9d.6bffd08",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 936.6666641235352,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "fb5cf604.7cb898",
+        "type": "mqtt in",
+        "z": "9e5cf9d.6bffd08",
+        "name": "",
+        "topic": "perception",
+        "qos": "2",
+        "broker": "",
+        "x": 106.66666412353516,
+        "y": 160,
+        "wires": [
+            [
+                "629af298.03c5ac"
+            ]
+        ]
+    },
+    {
+        "id": "f2aadac6.b441e8",
+        "type": "mqtt out",
+        "z": "9e5cf9d.6bffd08",
+        "name": "atack",
+        "topic": "atack",
+        "qos": "",
+        "retain": "",
+        "broker": "",
+        "x": 756.6666641235352,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "5e31ceb0.319b8",
+        "type": "comment",
+        "z": "9e5cf9d.6bffd08",
+        "name": "人を検知",
+        "info": "ラズパイ側で人を検知したら\n受信する",
+        "x": 86.66666412353516,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "5b3e67ef.ef0d48",
+        "type": "comment",
+        "z": "9e5cf9d.6bffd08",
+        "name": "lineの受信",
+        "info": "ユーザーによる人の判別を受信して\n「はい」だったら排除するための行動\n「いいえ」の時は何もしない",
+        "x": 66.66666412353516,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "e6f3ba1d.005268",
+        "type": "comment",
+        "z": "9e5cf9d.6bffd08",
+        "name": "functionの中のChannel Access TokenとUserIDを書き換える",
+        "info": "functionノードの中はLINE送信用のペイロードを作成する\n\nユーザー認証のためChannel Access TokenとUserIDを書き換える必要がある",
+        "x": 480,
+        "y": 220,
+        "wires": []
+    }
+]
